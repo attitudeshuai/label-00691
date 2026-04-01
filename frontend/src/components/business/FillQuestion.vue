@@ -101,14 +101,17 @@ function getBlankState(index: number) {
       </p>
     </div>
 
-    <!-- 解析 -->
-    <div v-if="store.isSubmitted && question.explanation" class="fill-q__explanation animate-slide-up">
+    <!-- 提交后显示答案和解析 -->
+    <div v-if="store.isSubmitted" class="fill-q__explanation">
       <div class="fill-q__explanation-header">
         <span :class="resultDetail?.isCorrect ? 'text-success-600' : 'text-danger-600'">
           {{ resultDetail?.isCorrect ? '回答正确' : '回答错误' }}
         </span>
+        <span class="text-neutral-400">|</span>
+        <span class="text-neutral-600">正确答案: {{ correctAnswers.join('、') }}</span>
       </div>
-      <p class="fill-q__explanation-text">{{ question.explanation }}</p>
+      <div v-if="question.explanation" class="fill-q__explanation-divider"></div>
+      <p v-if="question.explanation" class="fill-q__explanation-text">{{ question.explanation }}</p>
     </div>
   </div>
 </template>
@@ -184,7 +187,11 @@ function getBlankState(index: number) {
 }
 
 .fill-q__explanation-header {
-  @apply text-sm font-semibold mb-2;
+  @apply flex items-center gap-2 text-sm font-semibold;
+}
+
+.fill-q__explanation-divider {
+  @apply my-3 border-t border-neutral-200;
 }
 
 .fill-q__explanation-text {
