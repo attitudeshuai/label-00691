@@ -105,6 +105,7 @@ export const useQuizStore = defineStore('quiz', () => {
   function goToQuestion(index: number) {
     if (index >= 0 && index < totalQuestions.value) {
       currentIndex.value = index
+      phase.value = AppPhase.QUIZ
     }
   }
 
