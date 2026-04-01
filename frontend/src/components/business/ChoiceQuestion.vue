@@ -41,34 +41,36 @@ function getOptionState(label: string) {
 </script>
 
 <template>
-  <div class="choice-q stagger-enter" role="radiogroup" :aria-label="`第 ${question.id} 题选项`">
-    <button
-      v-for="(option, idx) in question.options"
-      :key="option.label"
-      :class="['choice-q__option', `choice-q__option--${getOptionState(option.label)}`]"
-      role="radio"
-      :aria-checked="selectedOption === option.label"
-      :aria-label="`选项 ${option.label}: ${option.content}`"
-      :disabled="store.isSubmitted"
-      :style="{ animationDelay: `${idx * 50}ms` }"
-      @click="selectOption(option.label)"
-    >
-      <span :class="['choice-q__label', `choice-q__label--${getOptionState(option.label)}`]">
-        <template v-if="getOptionState(option.label) === 'correct'">
-          <Check :size="16" />
-        </template>
-        <template v-else-if="getOptionState(option.label) === 'wrong'">
-          <X :size="16" />
-        </template>
-        <template v-else>
-          {{ option.label }}
-        </template>
-      </span>
-      <span class="choice-q__content">{{ option.content }}</span>
-    </button>
+  <div class="choice-q" role="radiogroup" :aria-label="`第 ${question.id} 题选项`">
+    <div class="choice-q__options stagger-enter">
+      <button
+        v-for="(option, idx) in question.options"
+        :key="option.label"
+        :class="['choice-q__option', `choice-q__option--${getOptionState(option.label)}`]"
+        role="radio"
+        :aria-checked="selectedOption === option.label"
+        :aria-label="`选项 ${option.label}: ${option.content}`"
+        :disabled="store.isSubmitted"
+        :style="{ animationDelay: `${idx * 50}ms` }"
+        @click="selectOption(option.label)"
+      >
+        <span :class="['choice-q__label', `choice-q__label--${getOptionState(option.label)}`]">
+          <template v-if="getOptionState(option.label) === 'correct'">
+            <Check :size="16" />
+          </template>
+          <template v-else-if="getOptionState(option.label) === 'wrong'">
+            <X :size="16" />
+          </template>
+          <template v-else>
+            {{ option.label }}
+          </template>
+        </span>
+        <span class="choice-q__content">{{ option.content }}</span>
+      </button>
+    </div>
 
     <!-- 提交后显示解析 -->
-    <div v-if="store.isSubmitted && question.explanation" class="choice-q__explanation animate-slide-up">
+    <div v-if="store.isSubmitted && question.explanation" class="choice-q__explanation">
       <div class="choice-q__explanation-header">
         <span :class="resultDetail?.isCorrect ? 'text-success-600' : 'text-danger-600'">
           {{ resultDetail?.isCorrect ? '回答正确' : '回答错误' }}

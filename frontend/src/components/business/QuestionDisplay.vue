@@ -1,12 +1,12 @@
 <script setup lang="ts">
 // -*- coding: utf-8 -*-
 import { computed, watch, ref } from 'vue'
-import { ChevronLeft, ChevronRight, BookOpen, PenLine } from 'lucide-vue-next'
+import { ChevronLeft, ChevronRight, BookOpen, PenLine, ArrowLeft } from 'lucide-vue-next'
 import AppButton from '@/components/ui/AppButton.vue'
 import ChoiceQuestion from '@/components/business/ChoiceQuestion.vue'
 import FillQuestion from '@/components/business/FillQuestion.vue'
 import { useQuizStore } from '@/stores/quiz'
-import { QuestionType } from '@/types'
+import { QuestionType, AppPhase } from '@/types'
 
 const store = useQuizStore()
 
@@ -29,12 +29,27 @@ const typeLabel = computed(() => {
 const typeIcon = computed(() => {
   return question.value?.type === QuestionType.CHOICE ? BookOpen : PenLine
 })
+
+function goBackToResult() {
+  store.phase = AppPhase.RESULT
+}
 </script>
 
 <template>
   <div class="question-display" v-if="question">
     <!-- Question Header -->
     <div class="question-display__header">
+      <div class="question-display__header-top">
+        <AppButton
+          v-if="store.isSubmitted"
+          variant="ghost"
+          size="sm"
+          @click="goBackToResult()"
+        >
+          <ArrowLeft :size="16" />
+          返回结果
+        </AppButton>
+      </div>
       <div class="question-display__meta">
         <span class="question-display__index">
           {{ store.currentIndex + 1 }} / {{ store.totalQuestions }}
@@ -133,6 +148,10 @@ const typeIcon = computed(() => {
 
 .question-display__header {
   @apply mb-6;
+}
+
+.question-display__header-top {
+  @apply mb-4;
 }
 
 .question-display__meta {

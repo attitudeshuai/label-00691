@@ -13,6 +13,7 @@ import {
 } from 'lucide-vue-next'
 import AppButton from '@/components/ui/AppButton.vue'
 import { useQuizStore } from '@/stores/quiz'
+import { AppPhase } from '@/types'
 
 const store = useQuizStore()
 const result = computed(() => store.quizResult)
@@ -54,6 +55,11 @@ function formatTime(seconds: number): string {
   const m = Math.floor(seconds / 60)
   const s = seconds % 60
   return m > 0 ? `${m} 分 ${s} 秒` : `${s} 秒`
+}
+
+function viewQuestion(index: number) {
+  store.goToQuestion(index)
+  store.phase = AppPhase.QUIZ
 }
 </script>
 
@@ -159,7 +165,7 @@ function formatTime(seconds: number): string {
           </span>
           <button
             class="result__detail-goto text-primary-600 hover:text-primary-800 text-sm"
-            @click="store.goToQuestion(idx)"
+            @click="viewQuestion(idx)"
             aria-label="查看此题"
           >
             查看
