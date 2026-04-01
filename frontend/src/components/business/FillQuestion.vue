@@ -94,21 +94,28 @@ function getBlankState(index: number) {
       </div>
       <!-- 提交后显示正确答案 -->
       <p
-        v-if="store.isSubmitted && getBlankState(index) !== 'correct'"
-        class="fill-q__correct-answer"
+        v-if="store.isSubmitted"
+        :class="['fill-q__correct-answer', getBlankState(index) === 'correct' ? 'text-success-600' : 'text-danger-600']"
       >
-        正确答案: <strong>{{ correctAnswers[index] || '—' }}</strong>
+        {{ getBlankState(index) === 'correct' ? '✓ 回答正确' : '✗ 正确答案' }}: <strong>{{ correctAnswers[index] || '—' }}</strong>
       </p>
     </div>
 
-    <!-- 解析 -->
-    <div v-if="store.isSubmitted && question.explanation" class="fill-q__explanation animate-slide-up">
+    <!-- 解析和总结 -->
+    <div v-if="store.isSubmitted" class="fill-q__explanation">
       <div class="fill-q__explanation-header">
-        <span :class="resultDetail?.isCorrect ? 'text-success-600' : 'text-danger-600'">
-          {{ resultDetail?.isCorrect ? '回答正确' : '回答错误' }}
+        <span :class="resultDetail?.isCorrect ? 'text-success-600' : 'text-danger-600'" class="font-semibold">
+          {{ resultDetail?.isCorrect ? '✓ 回答正确' : '✗ 回答错误' }}
+        </span>
+        <span class="text-neutral-400">|</span>
+        <span class="text-neutral-600">
+          正确答案: <strong>{{ correctAnswers.join('、') || '—' }}</strong>
         </span>
       </div>
-      <p class="fill-q__explanation-text">{{ question.explanation }}</p>
+      <p v-if="question.explanation" class="fill-q__explanation-text">
+        <span class="font-semibold text-neutral-700">解析：</span>
+        {{ question.explanation }}
+      </p>
     </div>
   </div>
 </template>

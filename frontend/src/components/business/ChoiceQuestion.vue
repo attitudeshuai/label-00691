@@ -67,16 +67,21 @@ function getOptionState(label: string) {
       <span class="choice-q__content">{{ option.content }}</span>
     </button>
 
-    <!-- 提交后显示解析 -->
-    <div v-if="store.isSubmitted && question.explanation" class="choice-q__explanation animate-slide-up">
+    <!-- 提交后显示答案总结和解析 -->
+    <div v-if="store.isSubmitted" class="choice-q__explanation">
       <div class="choice-q__explanation-header">
-        <span :class="resultDetail?.isCorrect ? 'text-success-600' : 'text-danger-600'">
-          {{ resultDetail?.isCorrect ? '回答正确' : '回答错误' }}
+        <span :class="resultDetail?.isCorrect ? 'text-success-600' : 'text-danger-600'" class="font-semibold">
+          {{ resultDetail?.isCorrect ? '✓ 回答正确' : '✗ 回答错误' }}
         </span>
         <span class="text-neutral-400">|</span>
-        <span class="text-neutral-600">正确答案: {{ question.correctAnswer }}</span>
+        <span class="text-neutral-600">
+          正确答案: <strong>{{ question.correctAnswer }}</strong>
+        </span>
       </div>
-      <p class="choice-q__explanation-text">{{ question.explanation }}</p>
+      <p v-if="question.explanation" class="choice-q__explanation-text">
+        <span class="font-semibold text-neutral-700">解析：</span>
+        {{ question.explanation }}
+      </p>
     </div>
   </div>
 </template>
