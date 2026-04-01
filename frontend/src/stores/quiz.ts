@@ -178,6 +178,16 @@ export const useQuizStore = defineStore('quiz', () => {
     phase.value = AppPhase.QUIZ
   }
 
+  /**
+   * 从结果页查看某题详情，切换到答题阶段并跳转
+   */
+  function viewQuestionDetail(index: number) {
+    if (index >= 0 && index < totalQuestions.value) {
+      currentIndex.value = index
+      phase.value = AppPhase.QUIZ
+    }
+  }
+
   return {
     // State
     phase,
@@ -205,6 +215,7 @@ export const useQuizStore = defineStore('quiz', () => {
     submitAll,
     reset,
     retry,
+    viewQuestionDetail,
   }
 })
 

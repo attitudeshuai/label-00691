@@ -159,7 +159,7 @@ function formatTime(seconds: number): string {
           </span>
           <button
             class="result__detail-goto text-primary-600 hover:text-primary-800 text-sm"
-            @click="store.goToQuestion(idx)"
+            @click="store.viewQuestionDetail(idx)"
             aria-label="查看此题"
           >
             查看
